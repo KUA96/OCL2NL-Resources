@@ -69,21 +69,21 @@ def extract_ocl_elements(ocl_expr):
     return freq
 
 
-# ====================== Accuracy Calculation Function ======================
-def calculate_accuracy(original_ocl, translated_text, lambda_val):
+# ====================== Clarity Calculation Function ======================
+def calculate_clarity(original_ocl, translated_text, lambda_val):
     """
-    Calculate accuracy metrics
+    Calculate clarity metrics
     """
     # Extract key elements
     original_freq = extract_ocl_elements(original_ocl)
     translated_freq = extract_ocl_elements(translated_text)
 
-    # Calculate base accuracy
+    # Calculate base clarity
     correct_matches = 0
     for elem in original_freq:
         if elem in translated_freq:
             correct_matches += 1
-    base_accuracy = correct_matches / len(original_freq) if original_freq else 0
+    base_clarity = correct_matches / len(original_freq) if original_freq else 0
 
     # Calculate frequency penalty
     total_diff = 0
@@ -93,9 +93,9 @@ def calculate_accuracy(original_ocl, translated_text, lambda_val):
         total_diff += abs(t_count - o_count)
     freq_penalty = total_diff / total_original if total_original else 0
 
-    # Combined accuracy
-    final_accuracy = base_accuracy - lambda_val * freq_penalty
-    return max(final_accuracy, 0)  # Ensure it does not go below 0
+    # Combined clarity
+    final_clarity = base_clarity - lambda_val * freq_penalty
+    return max(final_clarity, 0)  # Ensure it does not go below 0
 
 
 # ====================== Main Process ======================
@@ -103,37 +103,37 @@ def calculate_accuracy(original_ocl, translated_text, lambda_val):
 # df = pd.read_csv("result.csv")
 df = pd.read_csv("result.csv").fillna("")  # Replace NaN values with empty strings
 
-# Calculate accuracy for each row
+# Calculate clarity for each row
 results = []
 for idx, row in df.iterrows():
     ocl_expr = row["OCL"]
 
-    # Calculate OCL2NL accuracy
-    ocl2nl_acc = calculate_accuracy(ocl_expr, row["OCL2NL"], LAMBDA)
+    # Calculate OCL2NL clarity
+    ocl2nl_acc = calculate_clarity(ocl_expr, row["OCL2NL"], LAMBDA)
 
-    # Calculate GPT-3 accuracy
-    gpt3_acc = calculate_accuracy(ocl_expr, row["GPT"], LAMBDA)
+    # Calculate GPT-3 clarity
+    gpt3_acc = calculate_clarity(ocl_expr, row["GPT"], LAMBDA)
 
-    # Calculate Qwen accuracy
-    qwen_acc = calculate_accuracy(ocl_expr, row["Qwen"], LAMBDA)
+    # Calculate Qwen clarity
+    qwen_acc = calculate_clarity(ocl_expr, row["Qwen"], LAMBDA)
 
     results.append({
         "Row": idx + 1,
-        "OCL2NL_Accuracy": round(ocl2nl_acc, 4),
-        "GPT3_Accuracy": round(gpt3_acc, 4),
-        "Qwen_Accuracy": round(qwen_acc, 4)
+        "OCL2NL_Clarity": round(ocl2nl_acc, 4),
+        "GPT3_Clarity": round(gpt3_acc, 4),
+        "Qwen_Clarity": round(qwen_acc, 4)
     })
 
 # Convert to DataFrame and display
 result_df = pd.DataFrame(results)
-print("Accuracy comparison per row:")
+print("Clarity comparison per row:")
 print(result_df)
 
-# Calculate average accuracy
-avg_ocl2nl = result_df["OCL2NL_Accuracy"].mean()
-avg_gpt3 = result_df["GPT3_Accuracy"].mean()
-avg_qwen = result_df["Qwen_Accuracy"].mean()
-print(f"\nAverage accuracy comparison:")
+# Calculate average clarity
+avg_ocl2nl = result_df["OCL2NL_Clarity"].mean()
+avg_gpt3 = result_df["GPT3_Clarity"].mean()
+avg_qwen = result_df["Qwen_Clarity"].mean()
+print(f"\nAverage clarity comparison:")
 print(f"OCL2NL: {avg_ocl2nl:.4f}")
 print(f"GPT-3: {avg_gpt3:.4f}")
 print(f"Qwen:  {avg_qwen:.4f}")
