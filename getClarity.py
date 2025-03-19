@@ -1,136 +1,139 @@
-import sys
 import pandas as pd
-import spacy
 import re
+from collections import defaultdict
+
+# ====================== Configuration Parameters ======================
+LAMBDA = 0.2  # Frequency penalty coefficient
 
 
-try:
-    nlp = spacy.load("en_core_web_sm")
-except IOError:
-    print("Model 'en_core_web_sm' not found. Please ensure it is installed.")
-    sys.exit(1)
+# ====================== Key Elements Extraction Function ======================
+def extract_ocl_elements(ocl_expr):
+    """
+    Extract key elements such as class names, attribute names, and object names from OCL expressions.
+    Example implementation (adjust regular expressions based on actual OCL format):
+    """
+    # elements = []
+    # # Match pattern for class::attribute (e.g., Order::totalPrice)
+    # class_attr_matches = re.findall(r'(\w+)::(\w+)', ocl_expr)
+    # for match in class_attr_matches:
+    #     elements.extend([match[0], match[1]])
+    #
+    # # Match standalone object names (e.g., self.product)
+    # obj_matches = re.findall(r'\b(self\.\w+|\w+\.\w+)\b', ocl_expr)
+    # elements.extend(obj_matches)
 
-
-def extract_identifiers(ocl_expression):
     ocl_keywords = {
-        'self', 'if', 'then', 'else', 'endif', 'let', 'in', 'implies', 'and', 'or',
-        'xor', 'not', 'isUndefined', 'oclIsTypeOf', 'oclIsKindOf', 'oclAsType',
-        'allInstances', 'any', 'collect', 'select', 'reject', 'one', 'exists',
-        'forAll', 'isEmpty', 'notEmpty', 'size', 'includes', 'excludes', 'count',
-        'append', 'prepend', 'insertAt', 'removeAt', 'including', 'excluding',
-        'flatten', 'closure', 'iterate', 'sortedBy', 'orderBy', 'distinct'
+        # Logical operators
+        'and', 'or', 'xor', 'not', 'implies',
+
+        # Conditional expressions
+        'if', 'then', 'else', 'endif',
+
+        # Iteration and collection operations
+        'collect', 'select', 'reject', 'exists', 'forAll',
+        'any', 'one', 'allInstances', 'isUnique', 'iterate',
+        'sortedBy', 'closure', 'flatten', 'product', 'sum',
+        'min', 'max', 'size', 'count', 'includes', 'excludes',
+        'including', 'excluding', 'append', 'prepend', 'insertAt',
+        'removeAt', 'asSet', 'asSequence', 'asBag', 'asOrderedSet',
+        'union', 'intersection', 'minus', 'distinct', 'orderBy',
+
+        # Type operations
+        'oclIsTypeOf', 'oclIsKindOf', 'oclAsType', 'oclIsNew',
+        'oclIsInvalid', 'oclIsUndefined', 'oclType', 'oclIsInState',
+
+        # Context and variables
+        'self', 'let', 'in', 'def', 'context', 'package', 'endpackage',
+        'result', 'pre', 'post', 'static',
+
+        # Constraint type declarations
+        'inv', 'init', 'derive',
+
+        # Other reserved operations
+        'isEmpty', 'notEmpty', 'isUndefined', 'implies', 'div', 'mod',
+        'abs', 'floor', 'round', 'toUpper', 'toLower', 'substring', 'at'
     }
 
-    if pd.isna(ocl_expression):
+    if pd.isna(ocl_expr):
         return []
 
     pattern = r'\b[a-zA-Z_][a-zA-Z0-9_]*\b'
-    matches = re.findall(pattern, ocl_expression)
+    matches = re.findall(pattern, ocl_expr)
 
-    identifiers = [match for match in matches if match.lower() not in ocl_keywords]
+    elements = [match for match in matches if match.lower() not in ocl_keywords]
 
-    return identifiers
-
-
-def extract_sentence_components(text):
-
-    if pd.isna(text):
-        return {}
-    doc = nlp(text)
-    components = {}
-
-    for token in doc:
-        if token.pos_ in ['NOUN', 'ADJ', 'ADV']:
-            if token.pos_ not in components:
-                components[token.pos_] = set()
-            components[token.pos_].add(token.text)
+    # Count frequencies
+    freq = defaultdict(int)
+    for elem in elements:
+        freq[elem] += 1
+    return freq
 
 
-    for pos in components:
-        components[pos] = list(components[pos])
+# ====================== Accuracy Calculation Function ======================
+def calculate_accuracy(original_ocl, translated_text, lambda_val):
+    """
+    Calculate accuracy metrics
+    """
+    # Extract key elements
+    original_freq = extract_ocl_elements(original_ocl)
+    translated_freq = extract_ocl_elements(translated_text)
 
-    return components
+    # Calculate base accuracy
+    correct_matches = 0
+    for elem in original_freq:
+        if elem in translated_freq:
+            correct_matches += 1
+    base_accuracy = correct_matches / len(original_freq) if original_freq else 0
 
+    # Calculate frequency penalty
+    total_diff = 0
+    total_original = sum(original_freq.values())
+    for elem, o_count in original_freq.items():
+        t_count = translated_freq.get(elem, 0)
+        total_diff += abs(t_count - o_count)
+    freq_penalty = total_diff / total_original if total_original else 0
 
-def calculate_clarity(ocl_identifiers, other_components):
-
-    ocl_set = set(ocl_identifiers)
-    other_words = set()
-
-    for component_list in other_components.values():
-        other_words.update(component_list)
-
-    missing_words = ocl_set - other_words
-    excess_words = other_words - ocl_set
-
-    num_missing = len(missing_words)
-    num_excess = len(excess_words)
-    total_words = len(ocl_set)
-
-    if total_words == 0:
-        return 0
-
-    clarity_score = (num_missing + num_excess) / total_words
-
-    return clarity_score
-
-
-def calculate_average_clarity(results, clarity_key):
-    scores = [result[clarity_key] for result in results]
-    if not scores:
-        return 1
-    return sum(scores) / len(scores)
+    # Combined accuracy
+    final_accuracy = base_accuracy - lambda_val * freq_penalty
+    return max(final_accuracy, 0)  # Ensure it does not go below 0
 
 
-df = pd.read_excel('result.xlsx')
+# ====================== Main Process ======================
+# Read input table
+# df = pd.read_csv("result.csv")
+df = pd.read_csv("result.csv").fillna("")  # Replace NaN values with empty strings
 
-
-data = df.head(327)
-
-
+# Calculate accuracy for each row
 results = []
+for idx, row in df.iterrows():
+    ocl_expr = row["OCL"]
 
-for index, row in data.iterrows():
-    ocl_text = row['OCL']
-    ocl2nl_text = row['OCL2NL']
-    qwen_text = row['Qwen']
-    gpt_text = row['GPT']
+    # Calculate OCL2NL accuracy
+    ocl2nl_acc = calculate_accuracy(ocl_expr, row["OCL2NL"], LAMBDA)
 
+    # Calculate GPT-3 accuracy
+    gpt3_acc = calculate_accuracy(ocl_expr, row["GPT"], LAMBDA)
 
-    ocl_identifiers = extract_identifiers(ocl_text)
-
-
-    ocl2nl_components = extract_sentence_components(ocl2nl_text)
-    qwen_components = extract_sentence_components(qwen_text)
-    gpt_components = extract_sentence_components(gpt_text)
-
-
-    clarity_ocl2nl = calculate_clarity(ocl_identifiers, ocl2nl_components)
-    clarity_qwen = calculate_clarity(ocl_identifiers, qwen_components)
-    clarity_gpt = calculate_clarity(ocl_identifiers, gpt_components)
+    # Calculate Qwen accuracy
+    qwen_acc = calculate_accuracy(ocl_expr, row["Qwen"], LAMBDA)
 
     results.append({
-        'Row': index + 1,
-        'OCL Identifiers': ocl_identifiers,
-        'OCL2NL Components': ocl2nl_components,
-        'Qwen Components': qwen_components,
-        'Clarity OCL2NL': clarity_ocl2nl,
-        'Clarity Qwen': clarity_qwen,
-        'Clarity GPT': clarity_gpt
+        "Row": idx + 1,
+        "OCL2NL_Accuracy": round(ocl2nl_acc, 4),
+        "GPT3_Accuracy": round(gpt3_acc, 4),
+        "Qwen_Accuracy": round(qwen_acc, 4)
     })
 
-average_clarity_ocl2nl = calculate_average_clarity(results, 'Clarity OCL2NL')
-average_clarity_qwen = calculate_average_clarity(results, 'Clarity Qwen')
-average_clarity_gpt = calculate_average_clarity(results, 'Clarity GPT')
+# Convert to DataFrame and display
+result_df = pd.DataFrame(results)
+print("Accuracy comparison per row:")
+print(result_df)
 
-
-min_old, max_old = 0, 8
-min_new, max_new = 0, 1
-
-new_average_clarity_ocl2nl = (average_clarity_ocl2nl - min_old) / (max_old - min_old) * (max_new - min_new) + min_new
-new_average_clarity_qwen = (average_clarity_qwen - min_old) / (max_old - min_old) * (max_new - min_new) + min_new
-new_average_clarity_gpt = (average_clarity_gpt - min_old) / (max_old - min_old) * (max_new - min_new) + min_new
-
-print(f"Average Clarity OCL2NL: {1-new_average_clarity_ocl2nl:.3f}")
-print(f"Average Clarity Qwen: {1-new_average_clarity_qwen:.3f}")
-print(f"Average Clarity GPT: {1-new_average_clarity_gpt:.3f}")
+# Calculate average accuracy
+avg_ocl2nl = result_df["OCL2NL_Accuracy"].mean()
+avg_gpt3 = result_df["GPT3_Accuracy"].mean()
+avg_qwen = result_df["Qwen_Accuracy"].mean()
+print(f"\nAverage accuracy comparison:")
+print(f"OCL2NL: {avg_ocl2nl:.4f}")
+print(f"GPT-3: {avg_gpt3:.4f}")
+print(f"Qwen:  {avg_qwen:.4f}")
