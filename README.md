@@ -2,17 +2,32 @@
 
 ## Overview
 
-This project provides tools for converting Object Constraint Language (OCL) expressions into natural language descriptions. The source code is located in the `com.rm2pt.generator.rm2doc/src/com/rm2pt/generator/rm2doc/ocl2nl` directory, containing utilities for parsing OCL expressions and generating human-readable descriptions.
+This project provides tools for converting Object Constraint Language (OCL) expressions into natural language descriptions. The source code is located in the 'OCL2NL', containing utilities for parsing OCL expressions and generating human-readable descriptions.
 
 Additionally, the project includes a dataset (`1_result.xlsx`) used for training and evaluating the conversion process, and a Python script (`getclarity.py`) for calculating the clarity and accuracy of generated natural language descriptions.
 
 ## Table of Contents
 
+- [Code](#code)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Dataset](#dataset)
 - [Clarity Calculation](#clarity-calculation)
 
 ## Usage
+
+### Code
+.
+├── src-gen/com/rm2pt/generator/rm2doc                 # 自动生成的源码目录  
+├── src/                                               # 源码目录
+│   └── com/rm2pt/generator/rm2doc/ocl2nl/             # OCL转自然语言核心代码           
+│       ├── service/                                   # 服务层
+│       └── utils/                                     # 工具类  
+└── xtend-gen/                                         # Xtend生成的Java代码目录  
+    └── com/rm2pt/generator                            # 从.xtend文件编译生成的Java源码  
+
+### Installation
+
 
 ### Calculating Clarity
 
