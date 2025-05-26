@@ -17,7 +17,6 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 ## Usage
 
 ### Code
-.
 ├── src-gen/com/rm2pt/generator/rm2doc                 # 自动生成的源码目录  
 ├── src/                                               # 源码目录
 │   └── com/rm2pt/generator/rm2doc/ocl2nl/             # OCL转自然语言核心代码           
