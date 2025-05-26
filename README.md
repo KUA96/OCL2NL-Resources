@@ -47,11 +47,11 @@ The input to OCL2NL is a UML requirements model with OCL constraints. The model 
 
 After you add a requirements model, you can generate NL contracts for OCL contracts by right click on `cocome.remodel` -> `RM2PT`-> ` Advance Features`-> ` Generate NL Contract`
 
-<img src="../../imgs/RM2Doc/image-20220507174915467.png" alt="image-20220507174915467" style="zoom: 60%;" />
+<img src="img/image-20220507174915467.png" alt="image-20220507174915467" style="zoom: 60%;" />
 
 Refresh your remodel file to see the generated NL contracts
 
-<img src="../../imgs/RM2Doc/1691751188251.png" alt="image-202308111912" style="zoom: 60%;" />
+<img src="img/1691751188251.png" alt="image-202308111912" style="zoom: 60%;" />
 
 ### Calculating Clarity
 
