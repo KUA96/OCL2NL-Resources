@@ -17,6 +17,7 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 ## Usage
 
 ### Code
+```text
 ├── src-gen/com/rm2pt/generator/rm2doc    # Auto-generated source code
 ├── src/                                 # Source code directory
 │   └── com/rm2pt/generator/rm2doc/ocl2nl/
@@ -24,6 +25,7 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 │       └── utils/                       # Utility classes
 └── xtend-gen/                           # Xtend-generated Java code
     └── com/rm2pt/generator              # Compiled Java source from .xtend
+```
 
 ### Installation
 
