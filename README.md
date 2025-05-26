@@ -17,13 +17,13 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 ## Usage
 
 ### Code
-├── src-gen/com/rm2pt/generator/rm2doc                 # 自动生成的源码目录  
-├── src/                                               # 源码目录
-│   └── com/rm2pt/generator/rm2doc/ocl2nl/             # OCL转自然语言核心代码           
-│       ├── service/                                   # 服务层
-│       └── utils/                                     # 工具类  
-└── xtend-gen/                                         # Xtend生成的Java代码目录  
-    └── com/rm2pt/generator                            # 从.xtend文件编译生成的Java源码  
+├── src-gen/com/rm2pt/generator/rm2doc    # Auto-generated source code
+├── src/                                 # Source code directory
+│   └── com/rm2pt/generator/rm2doc/ocl2nl/
+│       ├── service/                     # Service layer
+│       └── utils/                       # Utility classes
+└── xtend-gen/                           # Xtend-generated Java code
+    └── com/rm2pt/generator              # Compiled Java source from .xtend
 
 ### Installation
 
