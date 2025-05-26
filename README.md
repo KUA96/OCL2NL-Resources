@@ -28,7 +28,30 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 ```
 
 ### Installation
+#### Prerequest
 
+In order to generate natural language descriptions for OCL contracts, you need a requirements model and OCL contracts, the **RM2PT project**. For creating or importing a RM2PT project，you can see the tutorial [here](https://rm2pt.com/tutorial/user/create_new_project).
+
+#### Input of OCL2NL — Requirements Model
+
+<img src="img/rm.png" alt="rm" style="zoom: 50%;" />
+
+The input to OCL2NL is a UML requirements model with OCL constraints. The model includes: a use case diagram, system sequence diagrams, contracts of and system operations.
+
+- **A conceptual class diagram:** A conceptual class diagram is a concept-relation model, which illustrates abstract and meaningful concepts and their relations in the problem domain, in which the concepts are specified as classes, the relations of the concepts are specified as the associations between the classes, and the properties of the concepts are specified as the attributes of the classes.
+- **A use case diagram:** A use case diagram captures domain processes as use cases in terms of interactions between the system and its users. It contains a set of use cases for a system, actors represented a type of users of the system or external systems that the system interacts with, the relations between the actors and these use cases, and relations among use cases.
+- **System sequence diagrams:** A system sequence diagram describes a particular domain process of a use case. It contains the actors that interact with the system, the system and the system events that the actors generate, their order, and inter-system events. Compared with the sequence diagram in design models, a system sequence diagram treats all systems as a black box and contains system events across the system boundary between actors and systems without object lifelines and internal interactions between objects.
+- **Contracts of system operations:** The contract of a system operation specifies the conditions that the state of the system is assumed to satisfy before the execution of the system operation, called the pre-condition and the conditions that the system state is required to satisfy after the execution (if it terminated), called the post-condition of the system operation. Typically, the pre-condition specifies the properties of the system state that need to be checked when system operation is to be executed, and the postcondition defines the possible changes that the execution of the system operation is to realize.
+
+#### Generate NL Contract
+
+After you add a requirements model, you can generate NL contracts for OCL contracts by right click on `cocome.remodel` -> `RM2PT`-> ` Advance Features`-> ` Generate NL Contract`
+
+<img src="../../imgs/RM2Doc/image-20220507174915467.png" alt="image-20220507174915467" style="zoom: 60%;" />
+
+Refresh your remodel file to see the generated NL contracts
+
+<img src="../../imgs/RM2Doc/1691751188251.png" alt="image-202308111912" style="zoom: 60%;" />
 
 ### Calculating Clarity
 
