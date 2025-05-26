@@ -95,7 +95,7 @@ def calculate_clarity(original_ocl, translated_text, lambda_val):
 
     # Combined clarity
     final_clarity = base_clarity - lambda_val * freq_penalty
-    return max(final_clarity, 0)  # Ensure it does not go below 0
+    return max(min(final_clarity, 1.0), 0.0)  # Ensure it does not go below 0
 
 
 # ====================== Main Process ======================
