@@ -26,11 +26,39 @@ Additionally, the project includes a dataset (`1_result.xlsx`) used for training
 └── xtend-gen/                           # Xtend-generated Java code
     └── com/rm2pt/generator              # Compiled Java source from .xtend
 ```
-
 ### Installation
+### Prerequest
+
+**OCL2NL** is an advanced feature of **RM2PT**. We recommend you to use OCL2NL as a part of RM2Doc, which is a feature of RM2PT. If you don't have RM2PT, download [here](https://ai4se.com/downloads/).
+
+### Online Installation
+
+Open RM2PT, click on `Help` -> `Install New Software`
+
+<img src="img/image-20220507173100117.png" alt="image-20220507173100117" style="zoom: 70%;" />
+
+
+
+Type http://rm2pt.com/RM2Doc-UpdateSite in the Work with field, select RM2Doc and click Next.
+
+<img src="img/image-20220507173453144.png" alt="image-20220507173453144" style="zoom: 50%;" />
+
+### Offline Installation
+
+**If the update site does not work**, you can choose to install it offline. Click [here](https://github.com/RM2PT/RM2Doc-UpdateSite/releases/download/v1.0.0/com.rm2pt.generator.rm2doc.updatesite-1.0.0-SNAPSHOT.zip) to download RM2Doc. Follow the steps below to install.
+
+<img src="img/image-20211017150545091.png" alt="image-20211017150545091" style="zoom: 50%;" />
+
+<img src="img/image-20211017150807041.png" alt="image-20211017150807041" style="zoom: 50%;" />
+
+<img src="img/image-20211017150921155.png" alt="image-20211017150921155" style="zoom: 50%;" />
+
+<img src="img/image-20211017150951456.png" alt="image-20211017150951456" style="zoom: 50%;" />
+
+### OCL2NL Tutorial
 #### Prerequest
 
-In order to generate natural language descriptions for OCL contracts, you need a requirements model and OCL contracts, the **RM2PT project**. For creating or importing a RM2PT project，you can see the tutorial [here](https://rm2pt.com/tutorial/user/create_new_project).
+In order to generate natural language descriptions for OCL contracts, you need a requirements model and OCL contracts, the **RM2PT project**. For creating or importing a RM2PT project，you can see the tutorial [here](https://ai4se.com/tutorial/user/create_new_project/).
 
 #### Input of OCL2NL — Requirements Model
 
