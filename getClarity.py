@@ -10,21 +10,10 @@ LAMBDA = 0.2  # Frequency penalty coefficient
 def extract_ocl_elements(ocl_expr):
     """
     Extract key elements such as class names, attribute names, and object names from OCL expressions.
-    Example implementation (adjust regular expressions based on actual OCL format):
     """
-    # elements = []
-    # # Match pattern for class::attribute (e.g., Order::totalPrice)
-    # class_attr_matches = re.findall(r'(\w+)::(\w+)', ocl_expr)
-    # for match in class_attr_matches:
-    #     elements.extend([match[0], match[1]])
-    #
-    # # Match standalone object names (e.g., self.product)
-    # obj_matches = re.findall(r'\b(self\.\w+|\w+\.\w+)\b', ocl_expr)
-    # elements.extend(obj_matches)
-
     ocl_keywords = {
         # Logical operators
-        'and', 'or', 'xor', 'not', 'implies',
+        'and', 'or', 'xor', 'not', 'implies', '<>',
 
         # Conditional expressions
         'if', 'then', 'else', 'endif',
@@ -34,13 +23,16 @@ def extract_ocl_elements(ocl_expr):
         'any', 'one', 'allInstances', 'isUnique', 'iterate',
         'sortedBy', 'closure', 'flatten', 'product', 'sum',
         'min', 'max', 'size', 'count', 'includes', 'excludes',
-        'including', 'excluding', 'append', 'prepend', 'insertAt',
-        'removeAt', 'asSet', 'asSequence', 'asBag', 'asOrderedSet',
-        'union', 'intersection', 'minus', 'distinct', 'orderBy',
+        'including', 'excluding', 'includingAll', 'excludingAll',
+        'append', 'prepend', 'insertAt', 'removeAt', 'indexOf',
+        'asSet', 'asSequence', 'asBag', 'asOrderedSet',
+        'union', 'intersection', 'minus', 'distinct',
+        'first', 'last',
 
         # Type operations
         'oclIsTypeOf', 'oclIsKindOf', 'oclAsType', 'oclIsNew',
         'oclIsInvalid', 'oclIsUndefined', 'oclType', 'oclIsInState',
+        'oclIsEmpty',
 
         # Context and variables
         'self', 'let', 'in', 'def', 'context', 'package', 'endpackage',
@@ -50,7 +42,7 @@ def extract_ocl_elements(ocl_expr):
         'inv', 'init', 'derive',
 
         # Other reserved operations
-        'isEmpty', 'notEmpty', 'isUndefined', 'implies', 'div', 'mod',
+        'isEmpty', 'notEmpty', 'isUndefined', 'div', 'mod',
         'abs', 'floor', 'round', 'toUpper', 'toLower', 'substring', 'at'
     }
 
@@ -99,9 +91,8 @@ def calculate_clarity(original_ocl, translated_text, lambda_val):
 
 
 # ====================== Main Process ======================
-# Read input table
-# df = pd.read_csv("result.csv")
-df = pd.read_csv("result.csv").fillna("")  # Replace NaN values with empty strings
+# Read input Excel file instead of CSV
+df = pd.read_excel("result.xlsx").fillna("")  # Replace NaN values with empty strings
 
 # Calculate clarity for each row
 results = []
