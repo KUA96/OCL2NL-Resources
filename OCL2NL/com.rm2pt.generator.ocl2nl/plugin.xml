@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <extension
+       point="org.eclipse.ui.menus">
+    <menuContribution
+          allPopups="false"
+          locationURI="popup:org.eclipse.ui.popup.any">
+       <menu
+             id="rmcode"
+             label="RM2PT">
+             <menu
+             id="AdvanceFeatures"
+             label="Advance Features">
+          <command
+                commandId="com.rm2pt.generator.rm2doc.commentgenerator"
+                label="Generate NL Contract"
+                style="push">
+          </command>
+          <command
+                commandId="com.rm2pt.generator.rm2doc.documentgenerator"
+                label="Generate ISO/IEC/IEEE 29148-2018 SRS"
+                style="push">
+          </command>
+          <visibleWhen
+                checkEnabled="true">
+             <or>
+                <reference
+                      definitionId="net.mydreamy.requirementmodel.REMODEL.Editor.opened">
+                </reference>
+                <iterate
+                      ifEmpty="false">
+                   <adapt
+                         type="org.eclipse.core.resources.IResource">
+                      <test
+                            property="org.eclipse.core.resources.name"
+                            value="*.remodel">
+                      </test>
+                   </adapt>
+                </iterate>
+                <iterate
+                      ifEmpty="false">
+                   <adapt
+                         type="org.eclipse.core.resources.IResource">
+                      <test
+                            property="org.eclipse.core.resources.name"
+                            value="*.xmi">
+                      </test>
+                   </adapt>
+                </iterate>
+             </or>
+          </visibleWhen>
+       </menu>
+       </menu>
+    </menuContribution>
+ </extension>
+ 
+  <extension
+       point="org.eclipse.ui.commands">
+    <command
+          id="com.rm2pt.generator.rm2doc.documentgenerator"
+          name="Generate IEEE 830-1988 SRS">
+    </command>
+    <command
+          id="com.rm2pt.generator.rm2doc.commentgenerator"
+          name="Generate NL Contract">
+    </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.handlers">
+    <handler
+          class="com.rm2pt.generator.rm2doc.REMODELExecutableExtensionFactory:com.rm2pt.generator.rm2doc.DocumentGeneratorHandler"
+          commandId="com.rm2pt.generator.rm2doc.documentgenerator">
+    </handler>
+    <handler
+          class="com.rm2pt.generator.rm2doc.REMODELExecutableExtensionFactory:com.rm2pt.generator.rm2doc.ocl2nl.CommentGeneratorHandler"
+          commandId="com.rm2pt.generator.rm2doc.commentgenerator">
+    </handler>
+ </extension>
+  <extension
+       point="org.eclipse.ui.editors.documentProviders">
+    <provider
+          class="com.rm2pt.generator.rm2doc.REMODELExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+          extensions="remodel"
+          id="net.mydreamy.requirementmodel.REMODEL.editors.documentProviders">
+    </provider>
+ </extension>
+ 
+  <extension
+       point="org.eclipse.xtext.extension_resourceServiceProvider">
+    <resourceServiceProvider
+          class="com.rm2pt.generator.rm2doc.REMODELExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+          uriExtension="remodel">
+    </resourceServiceProvider>
+ </extension>
+ 
+</plugin>
+	
