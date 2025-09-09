@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project provides tools for converting Object Constraint Language (OCL) expressions into natural language descriptions. The source code is located in the 'OCL2NL', containing utilities for parsing OCL expressions and generating human-readable descriptions.
+This project provides tools for converting Object Constraint Language (OCL) expressions into natural language descriptions. The source code is located in the 'OCL2NL' directory, which contains utilities for parsing OCL expressions and generating human-readable descriptions. A demo animation demonstrating the OCL2NL workflow is titled 'OCL2NL.MP4'.
 
-Additionally, the project includes a dataset (`1_result.xlsx`) used for training and evaluating the conversion process, and a Python script (`getclarity.py`) for calculating the clarity and accuracy of generated natural language descriptions.
+Additionally, the project includes a dataset (`result.xlsx`) used for training and evaluating the conversion process, and a Python script (`getclarity.py`) for calculating the clarity of generated natural language descriptions.
 
 ## Table of Contents
 
