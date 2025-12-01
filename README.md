@@ -19,13 +19,12 @@ Additionally, the project includes a dataset (`result.xlsx`) used for training a
 
 ### Code
 ```text
-├── src-gen/com/rm2pt/generator/rm2doc    # Auto-generated source code
-├── src/                                 # Source code directory
-│   └── com/rm2pt/generator/rm2doc/ocl2nl/
-│       ├── service/                     # Service layer
-│       └── utils/                       # Utility classes
-└── xtend-gen/                           # Xtend-generated Java code
-    └── com/rm2pt/generator              # Compiled Java source from .xtend
+├── src-gen/com/rm2pt/generator/rm2doc   # Auto-generated source code
+└── src/                                 # Source code directory
+    └── com/rm2pt/generator/rm2doc/ocl2nl/
+        ├── service/                     # Service layer
+        └── utils/                       # Utility classes
+
 ```
 ### Installation
 #### Prerequest
