@@ -12,38 +12,20 @@ def extract_ocl_elements(ocl_expr):
     Extract key elements such as class names, attribute names, and object names from OCL expressions.
     """
     ocl_keywords = {
-        # Logical operators
-        'and', 'or', 'xor', 'not', 'implies', '<>',
-
-        # Conditional expressions
-        'if', 'then', 'else', 'endif',
-
-        # Iteration and collection operations
-        'collect', 'select', 'reject', 'exists', 'forAll',
-        'any', 'one', 'allInstances', 'isUnique', 'iterate',
-        'sortedBy', 'closure', 'flatten', 'product', 'sum',
-        'min', 'max', 'size', 'count', 'includes', 'excludes',
-        'including', 'excluding', 'includingAll', 'excludingAll',
-        'append', 'prepend', 'insertAt', 'removeAt', 'indexOf',
-        'asSet', 'asSequence', 'asBag', 'asOrderedSet',
-        'union', 'intersection', 'minus', 'distinct',
-        'first', 'last',
-
-        # Type operations
-        'oclIsTypeOf', 'oclIsKindOf', 'oclAsType', 'oclIsNew',
-        'oclIsInvalid', 'oclIsUndefined', 'oclType', 'oclIsInState',
-        'oclIsEmpty',
-
-        # Context and variables
-        'self', 'let', 'in', 'def', 'context', 'package', 'endpackage',
-        'result', 'pre', 'post', 'static',
-
-        # Constraint type declarations
-        'inv', 'init', 'derive',
-
-        # Other reserved operations
-        'isEmpty', 'notEmpty', 'isUndefined', 'div', 'mod',
-        'abs', 'floor', 'round', 'toUpper', 'toLower', 'substring', 'at'
+        'context', 'package', 'endpackage', 'inv', 'def', 'pre', 'post', 'body',
+    'init', 'derive', 'static', 'if', 'then', 'else', 'endif', 'let', 'in',
+    'self', 'result', '@pre', 'null', 'invalid', 'and', 'or', 'xor', 'not',
+    'implies', 'Tuple', 'Enum', 'oclIsTypeOf', 'oclIsKindOf', 'oclAsType',
+    'oclIsUndefined', 'oclIsInvalid', 'oclType', 'oclIsInState', 'oclIsNew',
+    'size', 'isEmpty', 'notEmpty', 'includes', 'excludes', 'includesAll',
+    'excludesAll', 'count', 'sum', 'flatten', 'asSet', 'asBag', 'asSequence',
+    'asOrderedSet', 'forAll', 'exists', 'one', 'select', 'reject', 'collect',
+    'collectNested', 'any', 'isUnique', 'sortedBy', 'iterate', 'union',
+    'intersection', 'including', 'excluding', 'symmetricDifference',
+    'product', 'isSubsetOf', 'isProperSubsetOf', '-', 'at', 'first', 'last',
+    'indexOf', 'append', 'prepend', 'subSequence', 'subOrderedSet',
+    'insertAt', 'removeAt', 'abs', 'max', 'min', 'floor', 'round', 'div',
+    'mod', 'toUpper', 'toLower', 'substring', 'concat'
     }
 
     if pd.isna(ocl_expr):
@@ -128,3 +110,4 @@ print(f"\nAverage clarity comparison:")
 print(f"OCL2NL: {avg_ocl2nl:.4f}")
 print(f"GPT-3: {avg_gpt3:.4f}")
 print(f"Qwen:  {avg_qwen:.4f}")
+
